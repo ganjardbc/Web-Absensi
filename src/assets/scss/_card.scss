@@ -1,11 +1,11 @@
 // card
 .card {
     position: relative;
-    width: calc(100% - 10px);
+    width: calc(100%);
     border-radius: 5px;
     background-color: #fff;
     border: $border1;
-    margin: 5px;
+    // margin: 5px;
     overflow: hidden;
     &:hover {
         @include animate_1();

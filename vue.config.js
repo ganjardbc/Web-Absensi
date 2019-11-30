@@ -1,3 +1,3 @@
-module.exports = {
-  publicPath: '<Web-Absensi>'
-}
+// module.exports = {
+//   publicPath: '<Web-Absensi>'
+// }

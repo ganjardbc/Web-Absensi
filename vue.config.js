@@ -1,3 +1,6 @@
-// module.exports = {
-//   publicPath: '<Web-Absensi>'
-// }
+module.exports = {
+  publicPath: '<Web-Absensi>',
+  dev: {
+    port: 3000
+  }
+}

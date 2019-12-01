@@ -8,6 +8,7 @@ import Ruangan from '@/components/Ruangan/Index'
 import Jadwal from '@/components/Jadwal/Index'
 import Kehadiran from '@/components/Kehadiran/Index'
 import Laporan from '@/components/Laporan/Index'
+import Absensi from '@/components/qrcode/Index'
 
 Vue.use(Router)
 
@@ -52,6 +53,13 @@ export default new Router({
       path: '/laporan',
       name: 'laporan',
       component: Laporan
+    },
+    {
+      path: '/absensi',
+      name: 'absesnsi',
+      components: {
+        absensi: Absensi
+      }
     }
   ]
 })

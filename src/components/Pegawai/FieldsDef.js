@@ -1,24 +1,40 @@
 import VuetableFieldHandle from 'vuetable-2/src/components/VuetableFieldHandle.vue'
 
 export default [
+  // {
+  //   name: VuetableFieldHandle
+  // },
   {
-    name: VuetableFieldHandle
+    name: 'nik',
+    title: '<span class="orange glyphicon glyphicon-user"></span> NIK',
+    sortField: 'nik'
   },
   {
-    name: 'name',
-    title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
-    sortField: 'name'
+    name: 'firstName',
+    title: '<span class="orange glyphicon glyphicon-user"></span> First Name',
+    sortField: 'firstName'
+  },
+  {
+    name: 'lastName',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Last Name',
+    sortField: 'lastName'
   },
   {
     name: 'email',
     sortField: 'email'
   },
-  'birthdate', 
-  'nickname',
   {
-    name: 'gender',
+    name: 'birthDate',
+    sortField: 'birthDate'
+  },
+  {
+    name: 'username',
+    sortField: 'username'
+  },
+  {
+    name: 'position',
     formatter: (value) => {
-      return value === 'M' ? 'Male' : 'Female'
+      return value.positionName
     }
   },
   'actions'

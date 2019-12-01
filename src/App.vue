@@ -184,6 +184,8 @@
 			</div>
 
 		</div>
+
+    <router-view name="absensi"></router-view>
   </div>
 </template>
 

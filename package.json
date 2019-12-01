@@ -16,8 +16,10 @@
     "vue-cookie": "^1.1.4",
     "vue-google-charts": "^0.3.2",
     "vue-moment": "^4.0.0",
+    "vue-qrcode-component": "^2.1.1",
     "vue-router": "^3.0.1",
     "vue-tables-2": "^1.5.46",
+    "vue-uuid": "^1.1.1",
     "vuejs-smart-table": "^0.0.5",
     "vuetable-2": "^2.0.0-beta.4"
   },

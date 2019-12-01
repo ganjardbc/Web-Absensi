@@ -178,8 +178,8 @@ export default {
     },
 
     mounted() {
-        axios.get("https://vuetable.ratiw.net/api/users").then(response => {
-            this.data = response.data.data
+        axios.get("https://cors-anywhere.herokuapp.com/http://35.238.229.74:8080/employee").then(response => {
+            this.data = response.data
             console.log(data)
         })
     },

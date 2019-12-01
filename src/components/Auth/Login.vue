@@ -1,10 +1,13 @@
 <template>
     <div class="app-login gradient-blue">
         <div class="login-small">
-        	<h1 class="txt-site txt-main txt-center">
-        		LOGO
-        	</h1>
+            <div class="padding-10px"></div>
+        	<div class="image image-100px image-center">
+                <img src="@/assets/Logo2.jpg" />
+            </div>
+            <div class="padding-10px"></div>
         	<div>
+                <!--<h1 class="txt-site txt-18 txt-center txt-bold txt-main">LOGIN</h1>-->
                 <div class="fs-text" v-if="frameErr">
                     <div class="txt-site txt-11 txt-danger txt-center">
                         {{ message }}
@@ -12,14 +15,14 @@
                 </div>
         		<form @submit.prevent="doLogin()">
                     <div class="form-group">
-                        <label>Email</label>
+                        <label>Username</label>
                         <input 
-                            type="email" 
-                            v-model="user.Email"
+                            type="text" 
+                            v-model="user.Username"
                             class="txt txt-sekunder-color" />
-                        <div class="padding-top-10px" v-if="frameErrEmail">
+                        <div class="padding-top-10px" v-if="frameErrUsername">
 		                    <div class="txt-site txt-11 txt-danger">
-		                        {{ messageEmail }}
+		                        {{ messageUsername }}
 		                    </div>
 		                </div>
                     </div>
@@ -56,17 +59,17 @@ import axios from 'axios'
 export default {
     data () {
         return {
-            url: 'https://cors-anywhere.herokuapp.com/http://apikem.asmilahotel.space/login',
+            url: 'https://cors-anywhere.herokuapp.com/http://35.238.229.74:8080/employee/login',
             message: '',
-            messageEmail: '',
+            messageUsername: '',
             messagePass: '',
             valLogin: 'Login',
             disLogin: false,
             frameErr: false,
-            frameErrEmail: false,
+            frameErrUsername: false,
             frameErrPass: false,
             user: {
-                Email: '',
+                Username: '',
                 Password: ''
             }
         }
@@ -75,63 +78,62 @@ export default {
         doLogin () {
             var vm = this
             this.frameErr = false
-            this.frameErrEmail = false
+            this.frameErrUsername = false
             this.frameErrPass = false
 
-            if (this.user.Email !== '' && this.user.Password !== '') 
+            if (this.user.Username !== '' && this.user.Password !== '') 
             {
                 this.valLogin = 'Please Wait...'
                 this.disLogin = true
                 // this.$router.go({name: 'beranda'})
-                this.$router.push('/beranda')
-                // axios.post(this.url, {
-                //     'email': this.user.Email,
-                //     'password': this.user.Password
-                // })
-                // .then(response => {
-                //     console.log(response)
-                //     if (response.data.status === 'F') 
-                //     {
-                //         vm.frameErr = true
-                //         vm.message = response.data.message
-                //         vm.valLogin = 'Try Again'
-                //         vm.disLogin = false
-                //     }
-                //     if (response.data.status === 'S') 
-                //     {
-                //         vm.valLogin = 'Success'
-                //         vm.disLogin = true
-                //         this.$cookie.set('id', response.data.data.id, 2)
-                //         this.$cookie.set('id_avatar', response.data.data.id_avatar, 2)
-                //         this.$cookie.set('nama', response.data.data.nama, 2)
-                //         this.$cookie.set('Email', response.data.data.Email, 2)
-                //         // window.location = vm.initUrl
-                //         this.$router.go({name: 'home'})
-                        
-                //     }
-                // })
-                // .catch(e => {
-                //     //main error
-                //     if (e.response.status == 405) 
-                //     {
-                //         var msg = e.response.statusText
-                //     }
-                //     vm.frameErr = true
-                //     vm.message = msg
-                //     vm.valLogin = 'Try Again'
-                //     vm.disLogin = false
-                //     // console.log(e)
-                // })
+                // this.$router.push('/beranda')
+                axios.post(this.url, {
+                    'username': this.user.Username,
+                    'password': this.user.Password
+                })
+                .then(response => {
+                    console.log(response)
+
+                    if (response.status === 200) 
+                    {
+                        vm.valLogin = 'Success'
+                        vm.disLogin = true
+                        this.$cookie.set('token', response.data.token, 2)
+                        this.$cookie.set('Username', response.config.data.Username, 2)
+                        // window.location = vm.initUrl
+                        // this.$router.go({name: 'beranda'})
+                        this.$router.push('/beranda')
+                    }
+                    else 
+                    {
+                        vm.frameErr = true
+                        vm.message = response.data.message
+                        vm.valLogin = 'Try Again'
+                        vm.disLogin = false
+                    }
+                })
+                .catch(e => {
+                    //main error
+                    if (e.response.status == 401) 
+                    {
+                        var msg = 'Username atau password anda salah.'
+                    }
+                    vm.frameErr = true
+                    vm.message = msg
+                    vm.valLogin = 'Try Again'
+                    vm.disLogin = false
+                    console.log(e)
+                })
             } 
             else 
             {
                 vm.frameErr = true
-                vm.message = 'Email dan password harus diisi'
+                vm.message = 'Username dan password harus diisi'
             }
         }
     },
     beforeCreate: function () {
-        if (this.$cookie.get('id')) 
+        if (this.$cookie.get('token')) 
         {
             this.$router.push('/')
         }

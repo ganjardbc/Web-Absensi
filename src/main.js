@@ -3,10 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueCookie from 'vue-cookie'
+import VueQRCodeComponent from 'vue-qrcode-component'
 
 import 'semantic-ui-css/semantic.min.css'
 
 Vue.config.productionTip = false
+Vue.use(VueCookie)
+Vue.component('qr-code', VueQRCodeComponent)
 
 /* eslint-disable no-new */
 new Vue({

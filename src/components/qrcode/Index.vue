@@ -6,8 +6,8 @@
                     Scan This QR For Absence
                 </h1>
                 <div class="padding-10px"></div>
-                <div style="position: relative; width:300px; margin: auto;">
-                    <qr-code :text="uuid" size="300"></qr-code>
+                <div style="position: relative; width:250px; margin: auto;">
+                    <qr-code :text="uuid" size="250"></qr-code>
                 </div>
                 <div class="padding-10px"></div>
                 <div class="txt-site txt-13 txt-center txt-main txt-bold">

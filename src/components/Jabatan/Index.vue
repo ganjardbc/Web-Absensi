@@ -21,13 +21,13 @@
                     <div slot="actions" slot-scope="props">
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="onActionClicked('view-item', props.rowData)"
+                            @click="openPopup('view', props.rowData)"
                         >
                             <i class="fa fa-lw fa-search-plus"></i>
                         </button>
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="openPopup('edit')"
+                            @click="openPopup('edit', props.rowData)"
                         >
                             <i class="fa fa-lw fa-pencil-alt"></i>
                         </button>
@@ -59,6 +59,9 @@
                             <label v-if="typePopup === 'edit'">
                                 Edit Jabatan
                             </label>
+                            <label v-if="typePopup === 'view'">
+                                Detail Jabatan
+                            </label>
                         </h2>
                     </div>
                     <div class="content-right">
@@ -71,7 +74,11 @@
                     <div class="col-1">
                         <div class="form-group">
                             <label>Nama Jabatan</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color" 
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.positionName" />
                         </div>
                     </div>
                 </div>
@@ -79,7 +86,7 @@
                     <button type="button" class="btn btn-grey" @click="openPopup()">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-blue">
+                    <button v-if="typePopup !== 'view'" type="button" class="btn btn-blue" @click="submit()">
                         Save
                     </button>
                 </div>
@@ -89,13 +96,17 @@
 </template>
 
 <script>
-import Vuetable from "vuetable-2";
-import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
-import FieldsDef from "./FieldsDef.js";
-import axios from "axios";
-import _ from "lodash";
+import Vuetable from "vuetable-2"
+import VuetablePagination from "vuetable-2/src/components/VuetablePagination"
+import FieldsDef from "./FieldsDef.js"
+import axios from "axios"
+import _ from "lodash"
 
 import TableCss from '../modules/TableCss'
+
+const defaultPayload = {
+    positionName: ''
+}
 
 export default {
     components: {
@@ -110,67 +121,101 @@ export default {
             css: TableCss,
             typePopup: '',
             visiblePopup: false,
-            data: []
-        };
+            data: [],
+            form: defaultPayload
+        }
     },
 
     watch: {
         data(newVal, oldVal) {
-            this.$refs.vuetable.refresh();
+            this.$refs.vuetable.refresh()
         }
     },
 
     mounted() {
-        const HEADERS = {
-            Authorization: `Bearer ${this.$cookie.get('token')}`
-        }
-        axios.get("http://35.192.37.30:10000/position", { headers: HEADERS }).then(response => {
-            this.data = response.data.data;
-            console.log(data)
-        });
+        this.getData()
     },
 
     methods: {
-        openPopup(type) {
+        openPopup(type = '', data = null) {
             this.visiblePopup = !this.visiblePopup
             this.typePopup = type
+
+            if (this.typePopup === 'edit' || this.typePopup === 'view') {
+                this.form = {
+                    id: data.id,
+                    positionName: data.positionName
+                }
+            }
+            if (this.typePopup === 'create') {
+                this.form = defaultPayload
+            }
         },
         onPaginationData(paginationData) {
-            this.$refs.pagination.setPaginationData(paginationData);
+            this.$refs.pagination.setPaginationData(paginationData)
         },
         onChangePage(page) {
-            this.$refs.vuetable.changePage(page);
+            this.$refs.vuetable.changePage(page)
+        },
+        onActionClicked(action, data) {
+            if (action === 'delete-item') {
+                this.remove(data.id)
+            }
         },
         dataManager(sortOrder, pagination) {
-            if (this.data.length < 1) return;
+            if (this.data.length < 1) return
 
-            let local = this.data;
+            let local = this.data
 
             // sortOrder can be empty, so we have to check for that as well
             if (sortOrder.length > 0) {
-                console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
                 local = _.orderBy(
                 local,
                 sortOrder[0].sortField,
                 sortOrder[0].direction
-                );
+                )
             }
 
             pagination = this.$refs.vuetable.makePagination(
                 local.length,
                 this.perPage
-            );
-            console.log('pagination:', pagination)
-            let from = pagination.from - 1;
-            let to = from + this.perPage;
+            )
+            let from = pagination.from - 1
+            let to = from + this.perPage
 
             return {
                 pagination: pagination,
                 data: _.slice(local, from, to)
-            };
+            }
         },
-        onActionClicked(action, data) {
-            console.log("slot actions: on-click", data.name);
+        getData() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.192.37.30:10000/position", { headers: HEADERS }).then(response => {
+                this.data = response.data
+            })
+        },
+        submit() {
+            const payload = this.form
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.post("http://35.192.37.30:10000/position", payload, { headers: HEADERS }).then(response => {
+                this.openPopup()
+                this.getData()
+            })
+        },
+        remove(id) {
+            var a = confirm('hapus data ini ?')
+            if (a) {
+                const HEADERS = {
+                    Authorization: `Bearer ${this.$cookie.get('token')}`
+                }
+                axios.delete("http://35.192.37.30:10000/position/" + id, { headers: HEADERS }).then(response => {
+                    this.getData()
+                })
+            }
         }
     }
 }

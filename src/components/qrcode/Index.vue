@@ -7,7 +7,7 @@
                 </h1>
                 <div class="padding-10px"></div>
                 <div style="position: relative; width:250px; margin: auto;">
-                    <qr-code :text="uuid" size="250"></qr-code>
+                    <qr-code :text="uuid" :size="250"></qr-code>
                 </div>
                 <div class="padding-10px"></div>
                 <div class="txt-site txt-13 txt-center txt-main txt-bold">
@@ -28,7 +28,7 @@ import { uuid } from 'vue-uuid'
 export default {
     data () {
         return {
-            uuid: 'RSUD#' + uuid.v4(),
+            uuid: 'MTS#' + uuid.v4(),
             times: 15,
         }
     },
@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         refreshQRCode() {
-            this.uuid = 'RSUD#' + uuid.v4()
+            this.uuid = 'MTS#' + uuid.v4()
             this.times = 15
         }
     },

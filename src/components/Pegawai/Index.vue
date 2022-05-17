@@ -22,13 +22,13 @@
                     <div slot="actions" slot-scope="props">
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="onActionClicked('view-item', props.rowData)"
+                            @click="openPopup('edit', props.rowData)"
                         >
                             <i class="fa fa-lw fa-search-plus"></i>
                         </button>
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="openPopup('edit')"
+                            @click="openPopup('edit', props.rowData)"
                         >
                             <i class="fa fa-lw fa-pencil-alt"></i>
                         </button>
@@ -61,6 +61,9 @@
                             <label v-if="typePopup === 'edit'">
                                 Edit Pegawai
                             </label>
+                            <label v-if="typePopup === 'view'">
+                                Detail Pegawai
+                            </label>
                         </h2>
                     </div>
                     <div class="content-right">
@@ -73,27 +76,51 @@
                     <div class="col-1">
                         <div class="form-group">
                             <label>Nama depan</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.firstName" />
                         </div>
                         <div class="form-group">
                             <label>Nama belakang</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.lastName" />
                         </div>
                         <div class="form-group">
                             <label>Tempat lahir</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.birthPlace" />
                         </div>
                         <div class="form-group">
                             <label>Tanggal lahir</label>
-                            <input type="date" class="txt txt-sekunder-color" />
+                            <input 
+                                type="date" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.birthDate" />
                         </div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.username" />
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.password" />
                         </div>
                     </div>
                     <div class="col-2">
@@ -108,19 +135,34 @@
                         </div>
                         <div class="form-group">
                             <label>Alamat</label>
-                            <textarea class="txt txt-sekunder-color edit-text"></textarea>
+                            <textarea 
+                                class="txt txt-sekunder-color edit-text"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.address"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Nomor telpon</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.contactNumber" />
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.email" />
                         </div>
                         <div class="form-group">
                             <label>NIK</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.nik" />
                         </div>
                         <!-- for edit -->
                         <div v-if="typePopup === 'edit'" class="form-group">
@@ -135,7 +177,7 @@
                     <button type="button" class="btn btn-grey" @click="openPopup()">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-blue">
+                    <button v-if="typePopup !== 'view'" type="button" class="btn btn-blue" @click="submit()">
                         Save
                     </button>
                 </div>
@@ -154,6 +196,29 @@ import _ from "lodash"
 
 import TableCss from '../modules/TableCss'
 
+const defaultPayload = {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "address": "",
+    "birthDate": "yyyy-MM-dd",
+    "birthPlace": "",
+    "contactNumber": "",
+    "credentialsNonExpired": true,
+    "email": "",
+    "employeePhotoURL": "",
+    "enabled": true,
+    "firstName": "",
+    "lastName": "",
+    "nik": "",
+    "password": "",
+    "position": {
+        "id": 0,
+        "positionName": ""
+    },
+    "role": "ROLE_USER",
+    "username": ""
+}
+
 export default {
     components: {
         Vuetable,
@@ -167,7 +232,8 @@ export default {
             css: TableCss,
             typePopup: '',
             visiblePopup: false,
-            data: []
+            data: [],
+            form: defaultPayload
         }
     },
 
@@ -178,19 +244,42 @@ export default {
     },
 
     mounted() {
-        const HEADERS = {
-            Authorization: `Bearer ${this.$cookie.get('token')}`
-        }
-        axios.get("http://35.192.37.30:10000/employee", { headers: HEADERS }).then(response => {
-            this.data = response.data
-            console.log(data)
-        })
+        this.getData()
     },
 
     methods: {
-        openPopup(type) {
+        openPopup(type = '', data = null) {
             this.visiblePopup = !this.visiblePopup
             this.typePopup = type
+
+            if (this.typePopup === 'edit' || this.typePopup === 'view') {
+                this.form = {
+                    "id": data.id,
+                    "accountNonExpired": data.accountNonExpired,
+                    "accountNonLocked": data.accountNonLocked,
+                    "address": data.address,
+                    "birthDate": data.birthDate,
+                    "birthPlace": data.birthPlace,
+                    "contactNumber": data.contactNumber,
+                    "credentialsNonExpired": data.credentialsNonExpired,
+                    "email": data.email,
+                    "employeePhotoURL": data.employeePhotoURL,
+                    "enabled": data.enabled,
+                    "firstName": data.firstName,
+                    "lastName": data.lastName,
+                    "nik": data.nik,
+                    "password": data.password,
+                    "position": {
+                        "id": 0,
+                        "positionName": ""
+                    },
+                    "role": "ROLE_USER",
+                    "username": data.username
+                }
+            }
+            if (this.typePopup === 'create') {
+                this.form = defaultPayload
+            }
         },
         onPaginationData(paginationData) {
             this.$refs.pagination.setPaginationData(paginationData)
@@ -227,7 +316,39 @@ export default {
             }
         },
         onActionClicked(action, data) {
-            console.log("slot actions: on-click", data.name)
+            if (action === 'delete-item') {
+                this.remove(data.id)
+            }
+        },
+        getData() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.192.37.30:10000/employee", { headers: HEADERS }).then(response => {
+                this.data = response.data
+                console.log(this.data)
+            })
+        },
+        submit() {
+            const payload = this.form
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.post("http://35.192.37.30:10000/employee", payload, { headers: HEADERS }).then(response => {
+                this.openPopup()
+                this.getData()
+            })
+        },
+        remove(id) {
+            var a = confirm('hapus data ini ?')
+            if (a) {
+                const HEADERS = {
+                    Authorization: `Bearer ${this.$cookie.get('token')}`
+                }
+                axios.delete("http://35.192.37.30:10000/employee/" + id, { headers: HEADERS }).then(response => {
+                    this.getData()
+                })
+            }
         }
     }
 }

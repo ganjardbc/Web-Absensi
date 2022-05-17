@@ -178,7 +178,10 @@ export default {
     },
 
     mounted() {
-        axios.get("https://cors-anywhere.herokuapp.com/http://35.238.229.74:8080/employee").then(response => {
+        const HEADERS = {
+            Authorization: `Bearer ${this.$cookie.get('token')}`
+        }
+        axios.get("http://35.192.37.30:10000/employee", { headers: HEADERS }).then(response => {
             this.data = response.data
             console.log(data)
         })

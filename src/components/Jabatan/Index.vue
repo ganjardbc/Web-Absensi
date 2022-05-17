@@ -121,7 +121,10 @@ export default {
     },
 
     mounted() {
-        axios.get("https://vuetable.ratiw.net/api/users").then(response => {
+        const HEADERS = {
+            Authorization: `Bearer ${this.$cookie.get('token')}`
+        }
+        axios.get("http://35.192.37.30:10000/position", { headers: HEADERS }).then(response => {
             this.data = response.data.data;
             console.log(data)
         });

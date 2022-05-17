@@ -59,7 +59,7 @@ import axios from 'axios'
 export default {
     data () {
         return {
-            url: 'https://cors-anywhere.herokuapp.com/http://35.238.229.74:8080/employee/login',
+            url: 'http://35.192.37.30:10000/employee/login',
             message: '',
             messageUsername: '',
             messagePass: '',

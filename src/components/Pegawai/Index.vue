@@ -162,9 +162,22 @@
                                 :readOnly="typePopup === 'view'"
                                 v-model="form.nik" />
                         </div>
-                        <!-- for edit -->
-                        <div v-if="typePopup === 'edit'" class="form-group">
-                            <label>Upload foto</label>
+                    </div>
+                </div>
+                <div v-if="typePopup === 'edit'" class="padding-15px grid grid-2x gap-15px">
+                    <div class="col-1">
+                        <div class="form-group">
+                            <label>Employee Foto URL</label>
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                :readOnly="true"
+                                v-model="form.employeePhotoURL" />
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label>Upload Foto</label>
                             <div>
                                 <input type="file" id="file" ref="file" @change="onFileChange" />
                             </div>
@@ -347,24 +360,21 @@ export default {
             }
         },
         onFileChange() {
-            var files = this.$refs.file
-            console.log('onFileChange', files)
-            this.createImage(files[0]);
+            var files = this.$refs.file.files[0]
+            this.createImage(files);
         },
         createImage(file) {
-            console.log('createImage', file)
-            const payload = {
-                "id": this.form.id,
-                "file": file
-            }
+            let formData = new FormData()
+            formData.append('file', file)
+            formData.append('id', this.form.id)
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://35.192.37.30:10000/employee/uploadFoto", payload, { headers: HEADERS })
+            axios.post("http://35.192.37.30:10000/employee/uploadFoto", formData, { headers: HEADERS })
             .then(response => {
-                console.log('createImage', response)
-                if (response) {
+                if (response.data) {
                     alert('Foto berhasil di upload')
+                    this.form.employeePhotoURL = response.data.fileDownloadUri
                 } else {
                     alert('Foto gagal di upload')
                 }

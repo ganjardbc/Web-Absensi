@@ -22,7 +22,7 @@
                     <div slot="actions" slot-scope="props">
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="openPopup('edit', props.rowData)"
+                            @click="openPopup('view', props.rowData)"
                         >
                             <i class="fa fa-lw fa-search-plus"></i>
                         </button>
@@ -126,11 +126,9 @@
                     <div class="col-2">
                         <div class="form-group">
                             <label>Role</label>
-                            <select class="slc slc-sekunder">
-                                <option>opsi 1</option>
-                                <option>opsi 2</option>
-                                <option>opsi 3</option>
-                                <option>opsi 4</option>
+                            <select class="slc slc-sekunder" v-model="form.role" :disabled="typePopup === 'view'">
+                                <option value="ROLE_ADMIN" :selected="form.role === 'ROLER_ADMIN'">ROLE ADMIN</option>
+                                <option value="ROLE_USER" :selected="form.role === 'ROLE_USER'">ROLE USER</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -168,7 +166,7 @@
                         <div v-if="typePopup === 'edit'" class="form-group">
                             <label>Upload foto</label>
                             <div>
-                                <input type="file" />
+                                <input type="file" @change="onFileChange" />
                             </div>
                         </div>
                     </div>
@@ -212,8 +210,8 @@ const defaultPayload = {
     "nik": "",
     "password": "",
     "position": {
-        "id": 0,
-        "positionName": ""
+        "id": 1,
+        "positionName": "ADMIN"
     },
     "role": "ROLE_USER",
     "username": ""
@@ -233,7 +231,8 @@ export default {
             typePopup: '',
             visiblePopup: false,
             data: [],
-            form: defaultPayload
+            form: defaultPayload,
+            image: ''
         }
     },
 
@@ -270,10 +269,10 @@ export default {
                     "nik": data.nik,
                     "password": data.password,
                     "position": {
-                        "id": 0,
-                        "positionName": ""
+                        "id": 1,
+                        "positionName": "ADMIN"
                     },
-                    "role": "ROLE_USER",
+                    "role": data.role,
                     "username": data.username
                 }
             }
@@ -294,7 +293,6 @@ export default {
 
             // sortOrder can be empty, so we have to check for that as well
             if (sortOrder.length > 0) {
-                console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction)
                 local = _.orderBy(
                 local,
                 sortOrder[0].sortField,
@@ -306,7 +304,6 @@ export default {
                 local.length,
                 this.perPage
             )
-            console.log('pagination:', pagination)
             let from = pagination.from - 1
             let to = from + this.perPage
 
@@ -326,7 +323,6 @@ export default {
             }
             axios.get("http://35.192.37.30:10000/employee", { headers: HEADERS }).then(response => {
                 this.data = response.data
-                console.log(this.data)
             })
         },
         submit() {
@@ -349,6 +345,39 @@ export default {
                     this.getData()
                 })
             }
+        },
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            const payload = {
+                "id": 0,
+                "file": file
+            }
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.post("http://35.192.37.30:10000/employee/uploadFoto", payload, { headers: HEADERS })
+            .then(response => {
+                if (response) {
+                    alert('Foto berhasil di upload')
+                    this.openPopup()
+                    this.getData()
+                } else {
+                    alert('Foto gagal di upload')
+                    this.openPopup()
+                }
+            })
+            .catch(err => {
+                alert('Foto gagal di upload')
+                console.log('err', err)
+            })
+        },
+        removeImage: function (e) {
+            this.image = '';
         }
     }
 }

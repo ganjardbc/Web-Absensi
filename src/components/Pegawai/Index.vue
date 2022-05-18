@@ -166,7 +166,7 @@
                         <div v-if="typePopup === 'edit'" class="form-group">
                             <label>Upload foto</label>
                             <div>
-                                <input type="file" @change="onFileChange" />
+                                <input type="file" id="file" ref="file" @change="onFileChange" />
                             </div>
                         </div>
                     </div>
@@ -346,15 +346,15 @@ export default {
                 })
             }
         },
-        onFileChange(e) {
-            var files = e.target.files || e.dataTransfer.files;
-            if (!files.length)
-                return;
+        onFileChange() {
+            var files = this.$refs.file
+            console.log('onFileChange', files)
             this.createImage(files[0]);
         },
         createImage(file) {
+            console.log('createImage', file)
             const payload = {
-                "id": 0,
+                "id": this.form.id,
                 "file": file
             }
             const HEADERS = {
@@ -362,13 +362,11 @@ export default {
             }
             axios.post("http://35.192.37.30:10000/employee/uploadFoto", payload, { headers: HEADERS })
             .then(response => {
+                console.log('createImage', response)
                 if (response) {
                     alert('Foto berhasil di upload')
-                    this.openPopup()
-                    this.getData()
                 } else {
                     alert('Foto gagal di upload')
-                    this.openPopup()
                 }
             })
             .catch(err => {

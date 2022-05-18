@@ -3,7 +3,7 @@
         <div class="login-small">
             <div class="padding-10px"></div>
         	<div class="image image-100px image-center">
-                <img src="@/assets/Logo2.jpg" />
+                <img src="@/assets/logo-mts.jpg" />
             </div>
             <div class="padding-10px"></div>
         	<div>

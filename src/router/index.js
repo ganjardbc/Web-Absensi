@@ -35,8 +35,8 @@ export default new Router({
       component: Jabatan
     },
     {
-      path: '/ruangan',
-      name: 'ruangan',
+      path: '/matapelajaran',
+      name: 'matapelajaran',
       component: Ruangan
     },
     {

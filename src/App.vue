@@ -71,14 +71,14 @@
 										</div>
 									</li>
 								</router-link>
-								<router-link to="/ruangan">
+								<router-link to="/matapelajaran">
 									<li class="a-m-content">
 										<div class="a-m-list">
 											<div class="a-m-icn">
 												<i class='fa fa-lg fa-building'></i>
 											</div>
 											<div class="a-m-ttl">
-												Ruangan
+												Mata Pelajaran
 											</div>
 											<div class="a-m-icn a-m-icn-right txt-site txt-right txt-12"></div>
 										</div>

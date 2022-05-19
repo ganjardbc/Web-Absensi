@@ -6,7 +6,7 @@ export default [
   // },
   {
     name: 'roomName',
-    title: '<span class="orange glyphicon glyphicon-user"></span> Room Name',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Mata Pelajaran',
     sortField: 'roomName'
   },
   'actions'

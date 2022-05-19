@@ -2,7 +2,7 @@
     <div>
         <div class="grid grid-2x margin-bottom-10px">
             <div class="col-1">
-                <h1>Ruangan</h1>
+                <h1>Mata Pelajaran</h1>
             </div>
             <div class="col-2 content-right">
                 <button class="btn btn-circle btn-blue" @click="openPopup('create')">
@@ -54,13 +54,13 @@
                     <div>
                         <h2 class="title">
                             <label v-if="typePopup === 'create'">
-                                Tambah Ruangan
+                                Tambah Mata Pelajaran
                             </label>
                             <label v-if="typePopup === 'edit'">
-                                Edit Ruangan
+                                Edit Mata Pelajaran
                             </label>
                             <label v-if="typePopup === 'view'">
-                                Detail Ruangan
+                                Detail Mata Pelajaran
                             </label>
                         </h2>
                     </div>
@@ -73,7 +73,7 @@
                 <div class="padding-15px">
                     <div class="col-1">
                         <div class="form-group">
-                            <label>Nama Ruangan</label>
+                            <label>Nama Mata Pelajaran</label>
                             <input 
                                 type="text" 
                                 class="txt txt-sekunder-color"

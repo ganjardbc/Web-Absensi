@@ -334,7 +334,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://35.192.37.30:10000/employee", { headers: HEADERS }).then(response => {
+            axios.get("http://35.193.100.247:10000/employee", { headers: HEADERS }).then(response => {
                 this.data = response.data
             })
         },
@@ -343,7 +343,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://35.192.37.30:10000/employee", payload, { headers: HEADERS }).then(response => {
+            axios.post("http://35.193.100.247:10000/employee", payload, { headers: HEADERS }).then(response => {
                 this.openPopup()
                 this.getData()
             })
@@ -354,7 +354,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.delete("http://35.192.37.30:10000/employee/" + id, { headers: HEADERS }).then(response => {
+                axios.delete("http://35.193.100.247:10000/employee/" + id, { headers: HEADERS }).then(response => {
                     this.getData()
                 })
             }
@@ -370,7 +370,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://35.192.37.30:10000/employee/uploadFoto", formData, { headers: HEADERS })
+            axios.post("http://35.193.100.247:10000/employee/uploadFoto", formData, { headers: HEADERS })
             .then(response => {
                 if (response.data) {
                     alert('Foto berhasil di upload')

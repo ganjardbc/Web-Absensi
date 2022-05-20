@@ -21,13 +21,13 @@
                     <div slot="actions" slot-scope="props">
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="onActionClicked('view-item', props.rowData)"
+                            @click="openPopup('view', props.rowData)"
                         >
                             <i class="fa fa-lw fa-search-plus"></i>
                         </button>
                         <button 
                             class="btn btn-small-circle btn-grey" 
-                            @click="openPopup('edit')"
+                            @click="openPopup('edit', props.rowData)"
                         >
                             <i class="fa fa-lw fa-pencil-alt"></i>
                         </button>
@@ -60,6 +60,9 @@
                             <label v-if="typePopup === 'edit'">
                                 Edit Kehadiran
                             </label>
+                            <label v-if="typePopup === 'view'">
+                                Detail Kehadiran
+                            </label>
                         </h2>
                     </div>
                     <div class="content-right">
@@ -68,36 +71,135 @@
                         </button>
                     </div>
                 </div>
-                <div class="padding-15px">
+                <div class="grid grid-2x gap-20px padding-15px">
                     <div class="col-1">
                         <div class="form-group">
-                            <label>Pilih ruangan</label>
-                            <select class="slc slc-sekunder">
-                                <option>opsi 1</option>
-                                <option>opsi 2</option>
-                                <option>opsi 3</option>
-                                <option>opsi 4</option>
+                            <label>Pilih mata pelajaran</label>
+                            <select 
+                                class="slc slc-sekunder"
+                                v-model="form.roomName" 
+                                :disabled="typePopup === 'view'">
+                                <option 
+                                    v-for="(dt, i) in dataRoom" 
+                                    :key="i"
+                                    :value="dt.roomName"
+                                    :selected="form.roomName === dt.roomName">
+                                    {{ dt.roomName }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Pilih pegawai</label>
+                             <select 
+                                class="slc slc-sekunder"
+                                v-model="form.employee.id" 
+                                :disabled="typePopup === 'view'"
+                                @change="onChangeEmployee">
+                                <option 
+                                    v-for="(dt, i) in dataEmployee" 
+                                    :key="i"
+                                    :value="dt.id"
+                                    :selected="form.employee.id === dt.id">
+                                    {{ dt.firstName }} {{ dt.lastName }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Check In</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="time" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.checkin" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>Check Out</label>
+                            <input 
+                                type="time" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.checkout" 
+                                :disabled="typePopup === 'view'" />
                         </div>
                         <div class="form-group">
                             <label>Shift</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.shift" 
+                                :disabled="typePopup === 'view'" />
                         </div>
                         <div class="form-group">
                             <label>Tanggal</label>
-                            <input type="date" class="txt txt-sekunder-color" />
+                            <input 
+                                type="date" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.attendanceDate" 
+                                :disabled="typePopup === 'view'" />
                         </div>
                         <div class="form-group">
+                            <label>Start time</label>
+                            <input 
+                                type="time" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.startTime" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>End time</label>
+                            <input 
+                                type="time" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.endTime" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
                             <label>Latitude</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.latitude" 
+                                :disabled="typePopup === 'view'" />
                         </div>
                         <div class="form-group">
                             <label>Longitude</label>
-                            <input type="text" class="txt txt-sekunder-color" />
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.longitude" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Tollerance</label>
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.maxTollerance" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Tollerance</label>
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.minTollerance" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <input 
+                                type="text" 
+                                class="txt txt-sekunder-color"
+                                v-model="form.attendanceStatus" 
+                                :disabled="typePopup === 'view'" />
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <textarea 
+                                class="txt txt-sekunder-color edit-text"
+                                :readOnly="typePopup === 'view'"
+                                v-model="form.description"></textarea>
                         </div>
                     </div>
                 </div>
@@ -105,7 +207,7 @@
                     <button type="button" class="btn btn-grey" @click="openPopup()">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-blue">
+                    <button v-if="typePopup !== 'view'" type="button" class="btn btn-blue" @click="submit()">
                         Save
                     </button>
                 </div>
@@ -123,6 +225,45 @@ import _ from "lodash";
 
 import TableCss from '../modules/TableCss'
 
+const defaultPayload = {
+    "attendanceDate": "dd-MM-yyyy",
+    "attendanceStatus": "",
+    "checkin": "HH:mm:ss",
+    "checkout": "HH:mm:ss",
+    "description": "",
+    "employee": {
+        "accountNonExpired": true,
+        "accountNonLocked": true,
+        "address": "",
+        "birthDate": "yyyy-MM-dd",
+        "birthPlace": "",
+        "contactNumber": "",
+        "credentialsNonExpired": true,
+        "email": "",
+        "employeePhotoURL": "",
+        "enabled": true,
+        "firstName": "",
+        "id": 0,
+        "lastName": "",
+        "nik": "",
+        "password": "",
+        "position": {
+            "id": 0,
+            "positionName": ""
+        },
+        "role": "",
+        "username": ""
+    },
+    "endTime": "HH:mm:ss",
+    "latitude": 0,
+    "longitude": 0,
+    "maxTollerance": 0,
+    "minTollerance": 0,
+    "roomName": "",
+    "shift": "",
+    "startTime": "HH:mm:ss"
+}
+
 export default {
     components: {
         Vuetable,
@@ -136,7 +277,10 @@ export default {
             css: TableCss,
             typePopup: '',
             visiblePopup: false,
-            data: []
+            data: [],
+            dataRoom: [],
+            dataEmployee: [],
+            form: defaultPayload,
         };
     },
 
@@ -147,19 +291,43 @@ export default {
     },
 
     mounted() {
-        const HEADERS = {
-            Authorization: `Bearer ${this.$cookie.get('token')}`
-        }
-        axios.get("http://35.192.37.30:10000/attendance", { headers: HEADERS }).then(response => {
-            this.data = response.data.data;
-            console.log(data)
-        });
+        this.getData()
+        this.getDataRoom()
+        this.getDataEmployee()
     },
 
     methods: {
-        openPopup(type) {
+        onChangeEmployee(event) {
+            const id = event.target.value
+            const find = this.dataEmployee.find((dt) => dt.id == id)
+            this.form.employee = find
+        },
+        openPopup(type = '', data = null) {
             this.visiblePopup = !this.visiblePopup
             this.typePopup = type
+
+            if (this.typePopup === 'edit' || this.typePopup === 'view') {
+                this.form = {
+                    "id": data.id,
+                    "attendanceDate": data.attendanceDate,
+                    "attendanceStatus": data.attendanceStatus,
+                    "checkin": data.checkin,
+                    "checkout": data.checkout,
+                    "description": data.description,
+                    "employee": data.employee,
+                    "endTime": data.endTime,
+                    "latitude": data.latitude,
+                    "longitude": data.longitude,
+                    "maxTollerance": data.maxTollerance,
+                    "minTollerance": data.minTollerance,
+                    "roomName": data.roomName,
+                    "shift": data.shift,
+                    "startTime": data.startTime
+                }
+            }
+            if (this.typePopup === 'create') {
+                this.form = defaultPayload
+            }
         },
         onPaginationData(paginationData) {
             this.$refs.pagination.setPaginationData(paginationData);
@@ -174,7 +342,6 @@ export default {
 
             // sortOrder can be empty, so we have to check for that as well
             if (sortOrder.length > 0) {
-                console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
                 local = _.orderBy(
                 local,
                 sortOrder[0].sortField,
@@ -186,7 +353,6 @@ export default {
                 local.length,
                 this.perPage
             );
-            console.log('pagination:', pagination)
             let from = pagination.from - 1;
             let to = from + this.perPage;
 
@@ -196,8 +362,61 @@ export default {
             };
         },
         onActionClicked(action, data) {
-            console.log("slot actions: on-click", data.name);
-        }
+            if (action === 'delete-item') {
+                this.remove(data.id)
+            }
+        },
+        getDataRoom() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.193.100.247:10000/room", { headers: HEADERS }).then(response => {
+                this.dataRoom = response.data
+            })
+        },
+        getDataEmployee() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.193.100.247:10000/employee", { headers: HEADERS }).then(response => {
+                this.dataEmployee = response.data
+            })
+        },
+        getData() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.193.100.247:10000/attendance", { headers: HEADERS }).then(response => {
+                this.data = response.data;
+            });
+        },
+        submit() {
+            const payload = {
+                ...this.form,
+                "startTime": `${this.form.startTime}:00`,
+                "endTime": `${this.form.endTime}:00`,
+                "checkin": `${this.form.checkin}:00`,
+                "checkout": `${this.form.checkout}:00`,
+            }
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.post("http://35.193.100.247:10000/attendance", payload, { headers: HEADERS }).then(response => {
+                this.openPopup()
+                this.getData()
+            })
+        },
+        remove(id) {
+            var a = confirm('hapus data ini ?')
+            if (a) {
+                const HEADERS = {
+                    Authorization: `Bearer ${this.$cookie.get('token')}`
+                }
+                axios.delete("http://35.193.100.247:10000/attendance/" + id, { headers: HEADERS }).then(response => {
+                    this.getData()
+                })
+            }
+        },
     }
 }
 </script>

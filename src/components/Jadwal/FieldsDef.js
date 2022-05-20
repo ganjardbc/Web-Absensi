@@ -5,21 +5,34 @@ export default [
     name: VuetableFieldHandle
   },
   {
-    name: 'name',
-    title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
-    sortField: 'name'
+    name: 'room.roomName',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Mata Pelajaran',
+    sortField: 'room.roomName'
   },
   {
-    name: 'email',
-    sortField: 'email'
+    name: 'employee.firstName',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Pegawai',
+    sortField: 'employee.firstName'
   },
-  'birthdate', 
-  'nickname',
   {
-    name: 'gender',
-    formatter: (value) => {
-      return value === 'M' ? 'Male' : 'Female'
-    }
+    name: 'shift',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Jadwal',
+    sortField: 'shift'
+  },
+  {
+    name: 'description',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Deskripsi',
+    sortField: 'description'
+  },
+  {
+    name: 'startTime',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Start Time',
+    sortField: 'startTime'
+  },
+  {
+    name: 'endTime',
+    title: '<span class="orange glyphicon glyphicon-user"></span> End Time',
+    sortField: 'endTime'
   },
   'actions'
 ]

@@ -9,29 +9,35 @@
 
         <div class="display-flex-normal">
             <div class="form-group">
-                <label>Pilih ruangan</label>
-                <select class="slc slc-sekunder">
-                    <option>opsi 1</option>
-                    <option>opsi 2</option>
-                    <option>opsi 3</option>
-                    <option>opsi 4</option>
+                <label>Pilih mata pelajaran</label>
+                <select 
+                    class="slc slc-sekunder"
+                    v-model="form.roomName" 
+                    @change="onChangeRoom">
+                    <option 
+                        v-for="(dt, i) in dataRoom" 
+                        :key="i"
+                        :value="dt.roomName"
+                        :selected="form.roomName === dt.roomName">
+                        {{ dt.roomName }}
+                    </option>
                 </select>
             </div>
             <div class="form-group margin-left-15px margin-right-15px">
                 <label>Dari tanggal</label>
-                <input type="date" class="txt txt-sekunder-color" />
+                <input type="date" class="txt txt-sekunder-color" v-model="form.startDate"  />
             </div>
             <div class="form-group">
                 <label>Sampai tanggal</label>
-                <input type="date" class="txt txt-sekunder-color" />
+                <input type="date" class="txt txt-sekunder-color" v-model="form.currentDate"  />
             </div>
         </div>
 
         <div class="padding-15px content-right">
-            <button type="button" class="btn btn-blue">
+            <button type="button" class="btn btn-blue" @click="print()">
                 Print
             </button>
-            <button type="button" class="btn btn-blue">
+            <button type="button" class="btn btn-blue" @click="download()">
                 Download
             </button>
         </div>
@@ -41,10 +47,67 @@
 </template>
 
 <script>
+import axios from "axios"
+
+const defaultPayload = {
+    "roomName": "",
+    "startDate": "",
+    "currentDate": "",
+}
+
 export default {
     components: {},
     data() {
-        return {}
+        return {
+            dataRoom: [],
+            form: defaultPayload
+        }
     },
+    mounted() {
+        this.getDataRoom()
+    },
+    methods: {
+        onChangeRoom(event) {
+            const id = event.target.value
+            const find = this.dataRoom.find((dt) => dt.id == id)
+            console.log('onChangeRoom', find)
+        },
+        getDataRoom() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://35.193.100.247:10000/room", { headers: HEADERS }).then(response => {
+                this.dataRoom = response.data
+            })
+        },
+        print() {
+            const payload = this.form
+            if (payload.roomName && payload.startDate && payload.currentDate) {
+                const HEADERS = {
+                    Authorization: `Bearer ${this.$cookie.get('token')}`
+                }
+                axios.get(`http://35.193.100.247:10000/report/attendance/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                    this.openPopup()
+                    this.getData()
+                })
+            } else {
+                alert('please fill all the field !')
+            }
+        },
+        download() {
+            const payload = this.form
+            if (payload.roomName && payload.startDate && payload.currentDate) {
+                const HEADERS = {
+                    Authorization: `Bearer ${this.$cookie.get('token')}`
+                }
+                axios.get(`http://35.193.100.247:10000/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                    this.openPopup()
+                    this.getData()
+                })
+            } else {
+                alert('please fill all the field !')
+            }
+        },
+    }
 }
 </script>

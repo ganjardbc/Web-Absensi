@@ -9,6 +9,7 @@ import Jadwal from '@/components/Jadwal/Index'
 import Kehadiran from '@/components/Kehadiran/Index'
 import Laporan from '@/components/Laporan/Index'
 import Absensi from '@/components/qrcode/Index'
+import Lokasi from '@/components/Lokasi/Index'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/jadwal',
       name: 'jadwal',
       component: Jadwal
+    },
+    {
+      path: '/lokasi',
+      name: 'lokasi',
+      component: Lokasi
     },
     {
       path: '/kehadiran',

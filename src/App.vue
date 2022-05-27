@@ -110,6 +110,19 @@
 										</div>
 									</li>
 								</router-link>
+				<router-link to="/lokasi">
+									<li class="a-m-content">
+										<div class="a-m-list">
+											<div class="a-m-icn">
+												<i class='fa fa-lg fa-clock'></i>
+											</div>
+											<div class="a-m-ttl">
+												Lokasi
+											</div>
+											<div class="a-m-icn a-m-icn-right txt-site txt-right txt-12"></div>
+										</div>
+									</li>
+								</router-link>
                 <router-link to="/laporan">
 									<li class="a-m-content">
 										<div class="a-m-list">

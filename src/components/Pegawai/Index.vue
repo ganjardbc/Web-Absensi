@@ -125,10 +125,15 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <label>Role</label>
-                            <select class="slc slc-sekunder" v-model="form.role" :disabled="typePopup === 'view'">
-                                <option value="ROLE_ADMIN" :selected="form.role === 'ROLER_ADMIN'">ROLE ADMIN</option>
-                                <option value="ROLE_USER" :selected="form.role === 'ROLE_USER'">ROLE USER</option>
+                            <label>Position</label>
+                            <select class="slc slc-sekunder" v-model="form.position.id" :disabled="typePopup === 'view'">
+                                <option 
+                                    v-for="(dt, i) in dataPosition" 
+                                    :key="i"
+                                    :value="dt.id"
+                                    :selected="form.position.id === dt.id">
+                                    {{ dt.positionName }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -243,6 +248,7 @@ export default {
             css: TableCss,
             typePopup: '',
             visiblePopup: false,
+            dataPosition: [],
             data: [],
             form: defaultPayload,
             image: ''
@@ -256,6 +262,7 @@ export default {
     },
 
     mounted() {
+        this.getDataPosition()
         this.getData()
     },
 
@@ -330,6 +337,15 @@ export default {
                 this.remove(data.id)
             }
         },
+        getDataPosition() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://34.133.101.69:10000/position", { headers: HEADERS }).then(response => {
+                this.dataPosition = response.data
+                console.log('dataPosition', this.dataPosition)
+            })
+        },
         getData() {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
@@ -343,10 +359,17 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://34.133.101.69:10000/employee", payload, { headers: HEADERS }).then(response => {
-                this.openPopup()
-                this.getData()
-            })
+            if (this.typePopup == 'edit') {
+                axios.put("http://34.133.101.69:10000/employee/put", payload, { headers: HEADERS }).then(response => {
+                    this.openPopup()
+                    this.getData()
+                })
+            } else {
+                axios.post("http://34.133.101.69:10000/employee/post", payload, { headers: HEADERS }).then(response => {
+                    this.openPopup()
+                    this.getData()
+                })
+            }
         },
         remove(id) {
             var a = confirm('hapus data ini ?')

@@ -76,7 +76,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://35.193.100.247:10000/room", { headers: HEADERS }).then(response => {
+            axios.get("http://34.133.101.69:10000/room", { headers: HEADERS }).then(response => {
                 this.dataRoom = response.data
             })
         },
@@ -86,7 +86,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://35.193.100.247:10000/report/attendance/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                axios.get(`http://34.133.101.69:10000/report/attendance/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
                     this.openPopup()
                     this.getData()
                 })
@@ -100,7 +100,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://35.193.100.247:10000/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                axios.get(`http://34.133.101.69:10000/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
                     this.openPopup()
                     this.getData()
                 })

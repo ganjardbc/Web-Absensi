@@ -49,9 +49,9 @@
         </div>
 
         <div class="padding-15px content-right">
-            <button type="button" class="btn btn-blue" @click="print()">
+            <!-- <button type="button" class="btn btn-blue" @click="print()">
                 Print
-            </button>
+            </button> -->
             <button type="button" class="btn btn-blue" @click="download()">
                 Download
             </button>

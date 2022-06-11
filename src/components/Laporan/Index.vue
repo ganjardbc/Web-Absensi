@@ -8,7 +8,7 @@
         </div>
 
         <div class="display-flex-normal">
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Pilih mata pelajaran</label>
                 <select 
                     class="slc slc-sekunder"
@@ -17,9 +17,24 @@
                     <option 
                         v-for="(dt, i) in dataRoom" 
                         :key="i"
-                        :value="dt.roomName"
-                        :selected="form.roomName === dt.roomName">
+                        :value="dt.id"
+                        :selected="form.roomName === dt.id">
                         {{ dt.roomName }}
+                    </option>
+                </select>
+            </div> -->
+            <div class="form-group">
+                <label>Pilih pegawai</label>
+                <select 
+                    class="slc slc-sekunder"
+                    v-model="form.employeeName" 
+                    @change="onChangeEmployee">
+                    <option 
+                        v-for="(dt, i) in dataEmployee" 
+                        :key="i"
+                        :value="dt.id"
+                        :selected="form.employeeName === dt.id">
+                        {{ dt.firstName }}
                     </option>
                 </select>
             </div>
@@ -51,6 +66,7 @@ import axios from "axios"
 
 const defaultPayload = {
     "roomName": "",
+    "employeeName": "",
     "startDate": "",
     "currentDate": "",
 }
@@ -60,11 +76,13 @@ export default {
     data() {
         return {
             dataRoom: [],
+            dataEmployee: [],
             form: defaultPayload
         }
     },
     mounted() {
         this.getDataRoom()
+        this.getDataEmployee()
     },
     methods: {
         onChangeRoom(event) {
@@ -80,15 +98,27 @@ export default {
                 this.dataRoom = response.data
             })
         },
+        onChangeEmployee(event) {
+            const id = event.target.value
+            const find = this.dataEmployee.find((dt) => dt.id == id)
+            console.log('onChangeEmployee', find)
+        },
+        getDataEmployee() {
+            const HEADERS = {
+                Authorization: `Bearer ${this.$cookie.get('token')}`
+            }
+            axios.get("http://34.133.101.69:10000/employee", { headers: HEADERS }).then(response => {
+                this.dataEmployee = response.data
+            })
+        },
         print() {
             const payload = this.form
-            if (payload.roomName && payload.startDate && payload.currentDate) {
+            if (payload.employeeName && payload.startDate && payload.currentDate) {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://34.133.101.69:10000/report/attendance/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
-                    this.openPopup()
-                    this.getData()
+                axios.get(`http://34.133.101.69:10000/report/attendance/${payload.employeeName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                    console.log('print', response)
                 })
             } else {
                 alert('please fill all the field !')
@@ -96,13 +126,13 @@ export default {
         },
         download() {
             const payload = this.form
-            if (payload.roomName && payload.startDate && payload.currentDate) {
+            if (payload.employeeName && payload.startDate && payload.currentDate) {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://34.133.101.69:10000/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
-                    this.openPopup()
-                    this.getData()
+                axios.get(`http://34.133.101.69:10000/report/getPdf/${payload.employeeName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS, responseType: 'blob' }).then(response => {
+                    console.log('download', response)
+                    window.open(URL.createObjectURL(response.data))
                 })
             } else {
                 alert('please fill all the field !')

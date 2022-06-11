@@ -11,13 +11,8 @@ export default [
   },
   {
     name: 'firstName',
-    title: '<span class="orange glyphicon glyphicon-user"></span> First Name',
+    title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
     sortField: 'firstName'
-  },
-  {
-    name: 'lastName',
-    title: '<span class="orange glyphicon glyphicon-user"></span> Last Name',
-    sortField: 'lastName'
   },
   {
     name: 'email',

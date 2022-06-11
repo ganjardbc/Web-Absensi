@@ -46,8 +46,6 @@
             ></vuetable-pagination>
         </div>
 
-        <div class="padding-20px"></div>
-
         <!-- Create/Edit form -->
         <div v-if="visiblePopup" class="app-popup app-popup-show">
             <div class="popup-content-small">

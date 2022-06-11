@@ -40,13 +40,12 @@
                     </div>
         </vuetable>
         <div style="padding-top:10px">
-            <vuetable-pagination ref="pagination"
+            <vuetable-pagination 
+                ref="pagination"
                 :css="css.pagination"
                 @vuetable-pagination:change-page="onChangePage"
             ></vuetable-pagination>
         </div>
-
-        <div class="padding-20px"></div>
 
         <div v-if="visiblePopup" class="app-popup app-popup-show">
             <div class="popup-content-mikro">

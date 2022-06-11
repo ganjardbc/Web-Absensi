@@ -41,13 +41,12 @@
                     </div>
         </vuetable>
         <div style="padding-top:10px">
-            <vuetable-pagination ref="pagination"
+            <vuetable-pagination 
+                ref="pagination"
                 :css="css.pagination"
                 @vuetable-pagination:change-page="onChangePage"
             ></vuetable-pagination>
         </div>
-
-        <div class="padding-20px"></div>
 
         <!-- Create/Edit form -->
         <div v-if="visiblePopup" class="app-popup app-popup-show">
@@ -75,20 +74,12 @@
                 <div class="padding-15px grid grid-2x gap-15px">
                     <div class="col-1">
                         <div class="form-group">
-                            <label>Nama depan</label>
+                            <label>Nama lengkap</label>
                             <input 
                                 type="text" 
                                 class="txt txt-sekunder-color"
                                 :readOnly="typePopup === 'view'"
                                 v-model="form.firstName" />
-                        </div>
-                        <div class="form-group">
-                            <label>Nama belakang</label>
-                            <input 
-                                type="text" 
-                                class="txt txt-sekunder-color"
-                                :readOnly="typePopup === 'view'"
-                                v-model="form.lastName" />
                         </div>
                         <div class="form-group">
                             <label>Tempat lahir</label>

@@ -332,7 +332,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/position", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/position", { headers: HEADERS }).then(response => {
                 this.dataPosition = response.data
                 console.log('dataPosition', this.dataPosition)
             })
@@ -341,7 +341,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/employee", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/employee", { headers: HEADERS }).then(response => {
                 this.data = response.data
             })
         },
@@ -351,12 +351,12 @@ export default {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
             if (this.typePopup == 'edit') {
-                axios.put("http://34.133.101.69:10000/employee/put", payload, { headers: HEADERS }).then(response => {
+                axios.put("http://52.15.191.178:8080/employee/put", payload, { headers: HEADERS }).then(response => {
                     this.openPopup()
                     this.getData()
                 })
             } else {
-                axios.post("http://34.133.101.69:10000/employee/post", payload, { headers: HEADERS }).then(response => {
+                axios.post("http://52.15.191.178:8080/employee/post", payload, { headers: HEADERS }).then(response => {
                     this.openPopup()
                     this.getData()
                 })
@@ -368,7 +368,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.delete("http://34.133.101.69:10000/employee/" + id, { headers: HEADERS }).then(response => {
+                axios.delete("http://52.15.191.178:8080/employee/" + id, { headers: HEADERS }).then(response => {
                     this.getData()
                 })
             }
@@ -384,7 +384,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://34.133.101.69:10000/employee/uploadFoto", formData, { headers: HEADERS })
+            axios.post("http://52.15.191.178:8080/employee/uploadFoto", formData, { headers: HEADERS })
             .then(response => {
                 if (response.data) {
                     alert('Foto berhasil di upload')

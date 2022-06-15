@@ -295,7 +295,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/room", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/room", { headers: HEADERS }).then(response => {
                 this.dataRoom = response.data
             })
         },
@@ -303,7 +303,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/employee", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/employee", { headers: HEADERS }).then(response => {
                 this.dataEmployee = response.data
             })
         },
@@ -311,7 +311,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/schedule", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/schedule", { headers: HEADERS }).then(response => {
                 this.data = response.data
             })
         },
@@ -325,7 +325,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://34.133.101.69:10000/schedule", payload, { headers: HEADERS }).then(response => {
+            axios.post("http://52.15.191.178:8080/schedule", payload, { headers: HEADERS }).then(response => {
                 this.openPopup()
                 this.getData()
             })
@@ -336,7 +336,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.delete("http://34.133.101.69:10000/schedule/" + id, { headers: HEADERS }).then(response => {
+                axios.delete("http://52.15.191.178:8080/schedule/" + id, { headers: HEADERS }).then(response => {
                     this.getData()
                 })
             }

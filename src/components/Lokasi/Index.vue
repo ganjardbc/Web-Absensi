@@ -220,7 +220,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/location", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/location", { headers: HEADERS }).then(response => {
                 this.data = response.data
             })
         },
@@ -229,7 +229,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.post("http://34.133.101.69:10000/location", payload, { headers: HEADERS }).then(response => {
+            axios.post("http://52.15.191.178:8080/location", payload, { headers: HEADERS }).then(response => {
                 this.openPopup()
                 this.getData()
             })
@@ -240,7 +240,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.delete("http://34.133.101.69:10000/location/" + id, { headers: HEADERS }).then(response => {
+                axios.delete("http://52.15.191.178:8080/location/" + id, { headers: HEADERS }).then(response => {
                     this.getData()
                 })
             }

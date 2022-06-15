@@ -59,7 +59,7 @@ import axios from 'axios'
 export default {
     data () {
         return {
-            url: 'http://34.133.101.69:10000/employee/login',
+            url: 'http://52.15.191.178:8080/employee/login',
             message: '',
             messageUsername: '',
             messagePass: '',

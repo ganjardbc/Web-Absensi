@@ -8,7 +8,7 @@
         </div>
 
         <div class="display-flex-normal">
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label>Pilih mata pelajaran</label>
                 <select 
                     class="slc slc-sekunder"
@@ -17,13 +17,13 @@
                     <option 
                         v-for="(dt, i) in dataRoom" 
                         :key="i"
-                        :value="dt.id"
-                        :selected="form.roomName === dt.id">
+                        :value="dt.roomName"
+                        :selected="form.roomName === dt.roomName">
                         {{ dt.roomName }}
                     </option>
                 </select>
-            </div> -->
-            <div class="form-group">
+            </div>
+            <!-- <div class="form-group">
                 <label>Pilih pegawai</label>
                 <select 
                     class="slc slc-sekunder"
@@ -37,7 +37,7 @@
                         {{ dt.firstName }}
                     </option>
                 </select>
-            </div>
+            </div> -->
             <div class="form-group margin-left-15px margin-right-15px">
                 <label>Dari tanggal</label>
                 <input type="date" class="txt txt-sekunder-color" v-model="form.startDate"  />
@@ -82,7 +82,6 @@ export default {
     },
     mounted() {
         this.getDataRoom()
-        this.getDataEmployee()
     },
     methods: {
         onChangeRoom(event) {
@@ -94,7 +93,7 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/room", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/room", { headers: HEADERS }).then(response => {
                 this.dataRoom = response.data
             })
         },
@@ -107,17 +106,17 @@ export default {
             const HEADERS = {
                 Authorization: `Bearer ${this.$cookie.get('token')}`
             }
-            axios.get("http://34.133.101.69:10000/employee", { headers: HEADERS }).then(response => {
+            axios.get("http://52.15.191.178:8080/employee", { headers: HEADERS }).then(response => {
                 this.dataEmployee = response.data
             })
         },
         print() {
             const payload = this.form
-            if (payload.employeeName && payload.startDate && payload.currentDate) {
+            if (payload.roomName && payload.startDate && payload.currentDate) {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://34.133.101.69:10000/report/attendance/${payload.employeeName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
+                axios.get(`http://52.15.191.178:8080/report/attendance/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS }).then(response => {
                     console.log('print', response)
                 })
             } else {
@@ -126,11 +125,11 @@ export default {
         },
         download() {
             const payload = this.form
-            if (payload.employeeName && payload.startDate && payload.currentDate) {
+            if (payload.roomName && payload.startDate && payload.currentDate) {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://34.133.101.69:10000/report/getPdf/${payload.employeeName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS, responseType: 'blob' }).then(response => {
+                axios.get(`http://52.15.191.178:8080/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS, responseType: 'blob' }).then(response => {
                     console.log('download', response)
                     window.open(URL.createObjectURL(response.data))
                 })

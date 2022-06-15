@@ -87,7 +87,6 @@ export default {
         onChangeRoom(event) {
             const id = event.target.value
             const find = this.dataRoom.find((dt) => dt.id == id)
-            console.log('onChangeRoom', find)
         },
         getDataRoom() {
             const HEADERS = {
@@ -100,7 +99,6 @@ export default {
         onChangeEmployee(event) {
             const id = event.target.value
             const find = this.dataEmployee.find((dt) => dt.id == id)
-            console.log('onChangeEmployee', find)
         },
         getDataEmployee() {
             const HEADERS = {
@@ -129,8 +127,7 @@ export default {
                 const HEADERS = {
                     Authorization: `Bearer ${this.$cookie.get('token')}`
                 }
-                axios.get(`http://52.15.191.178:8080/report/getPdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS, responseType: 'blob' }).then(response => {
-                    console.log('download', response)
+                axios.get(`http://52.15.191.178:8080/report/getpdf/${payload.roomName}/${payload.startDate}/${payload.currentDate}`, { headers: HEADERS, responseType: 'blob' }).then(response => {
                     window.open(URL.createObjectURL(response.data))
                 })
             } else {
